@@ -61,7 +61,6 @@ class FlowerDataset(Dataset):
         # 读取mat形式label
         label_file = "imagelabels.mat"  # hard code
         path_label_file = os.path.join(self.root_dir, "..", label_file)
-        from scipy.io import loadmat
         label_array = loadmat(path_label_file)["labels"].squeeze()
         self.label_array = label_array
 
