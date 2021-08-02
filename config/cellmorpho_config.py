@@ -12,6 +12,9 @@ sys.path.append(os.path.join(BASE_DIR, '..'))
 import torchvision.transforms as transforms
 from easydict import EasyDict
 
+import albumentations as A
+from albumentations.pytorch import ToTensorV2
+
 cfg = EasyDict()  # 访问属性的方式去使用key-value 即通过 .key获得value
 
 cfg.model_name = "resnet18"
@@ -43,27 +46,32 @@ cfg.max_epoch = 50
  
 cfg.log_interval = 10
 
-norm_mean = [0.485, 0.456, 0.406]  # imagenet 120万图像统计得来
-norm_std = [0.229, 0.224, 0.225]
-normTransform = transforms.Normalize(norm_mean, norm_std)
+image_size = 224
+cfg.transforms_train = A.Compose([
+        A.Resize(height = image_size, width = image_size, p = 1.0),
+        ToTensorV2()],
+        p = 1.0)
 
-cfg.transforms_train = transforms.Compose([
-        transforms.Resize((256)),  # (256, 256) 区别； （256） 最短边256
-        transforms.CenterCrop(256),
-        transforms.RandomCrop(224),
-        transforms.RandomHorizontalFlip(p=0.5),
-        transforms.ToTensor(),
-        normTransform,
-])
-cfg.transforms_valid = transforms.Compose([
-        transforms.Resize((224, 224)),
-        transforms.ToTensor(),
-        normTransform,
-])
+cfg.transforms_valid = A.Compose([
+        A.Resize(image_size, image_size),
+        ToTensorV2()],
+        p = 1.0)
 
-
-
-
-
-
-
+# norm_mean = [0.485, 0.456, 0.406]  # imagenet 120万图像统计得来
+# norm_std = [0.229, 0.224, 0.225]
+# normTransform = transforms.Normalize(norm_mean, norm_std)
+# 
+# cfg.transforms_train = transforms.Compose([
+        # transforms.Resize((256)),  # (256, 256) 区别； （256） 最短边256
+        # transforms.CenterCrop(256),
+        # transforms.RandomCrop(224),
+        # transforms.RandomHorizontalFlip(p=0.5),
+        # transforms.ToTensor(),
+        # normTransform,
+# ])
+# 
+# cfg.transforms_valid = transforms.Compose([
+        # transforms.Resize((224, 224)),
+        # transforms.ToTensor(),
+        # normTransform,
+# ])
