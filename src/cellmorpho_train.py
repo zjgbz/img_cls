@@ -18,7 +18,7 @@ from tools.common_tools import *
 from tools.my_loss import LabelSmoothLoss
 from config.flower_config import cfg
 from datetime import datetime
-from datasets.flower_102 import FlowerDataset
+from datasets.cell_painting_lincs import CellMorphoDataset
 
 setup_seed(12345)  # 先固定随机种子
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

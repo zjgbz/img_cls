@@ -11,19 +11,20 @@ from PIL import Image
 from torch.utils.data import Dataset
 import pandas as pd
 
-class FlowerDataset(Dataset):
-    cls_num = 102
-    names = tuple([i for i in range(cls_num)])
+class CellMorphoDataset(Dataset):
+    cls_num = 2
 
-    def __init__(self, img_dict_dir_filename, transform=None):
+    def __init__(self, img_dict_df, img_dir_col, label_col, transform=None):
         """
         获取数据集的路径、预处理的方法
         """
-        self.img_dict_dir_filename = img_dict_dir_filename
+        self.img_dict_df = img_dict_df
         self.transform = transform
         self.img_info = []   # [(path, label), ... , ]
         self.label_array = None
         self._get_img_info()
+        self.img_dir_col = img_dir_col
+        self.label_col = label_col
 
     def __getitem__(self, index):
         """
@@ -32,11 +33,13 @@ class FlowerDataset(Dataset):
         :return:
         """
         path_img, label = self.img_info[index]
-        img = Image.open(path_img).convert('RGB')
-
+        image_5D = np.load(path_img) # (5, 520, 696)
         if self.transform is not None:
-            img = self.transform(img)
-
+            image_5D = image_5D.transpose(1, 2, 0)
+            augmented = self.transform(image = image_5D)
+            img = augmented['image']
+            img = img / 15
+        
         return img, label, path_img
 
     def __len__(self):
@@ -55,30 +58,25 @@ class FlowerDataset(Dataset):
         path, label
         :return:
         """
-        names_imgs = os.listdir(self.root_dir)
-        names_imgs = [n for n in names_imgs if n.endswith(".jpg")]
+        path_imgs = img_dict_df.loc[:, img_dir_col].values.tolist()
 
         # read labels from pandas dataframe -- "assay_id_737823"
-        label_file = "imagelabels.mat"  # hard code
-        path_label_file = os.path.join(self.root_dir, "..", label_file)
-        label_array = loadmat(path_label_file)["labels"].squeeze()
+        label_array = img_dict_df.loc[:, label_col].values.tolist()
         self.label_array = label_array
 
-        # 匹配label
-        idx_imgs = [int(n[6:11]) for n in names_imgs]
-
-        path_imgs = [os.path.join(self.root_dir, n) for n in names_imgs]
-        self.img_info = [(p, int(label_array[idx-1]-1)) for p, idx in zip(path_imgs, idx_imgs)]   # 注意索引，注意标签减一
-
+        # match the path_imgs and label_array
+        self.img_info = [(p, label) for p, label in zip(path_imgs, label_array)]
 
 if __name__ == "__main__":
 
-    # root_dir = r"G:\deep_learning_data\102flowers\train"
-    root_dir = r"G:\deep_learning_data\flowers102\train"
+    img_dict_dir = "/gxr/minzhi/multiomics_data/E_Metadata/raw"
+    img_dict_filename = "assay_id_737823_raw_img_unique_train_val.csv"
+    img_dict_dir_filename = os.path.join(img_dict_dir, img_dict_filename)
+    img_dict_df = pd.read_csv(img_dict_dir_filename, sep = ",", header = 0, index_col = None)
 
-    test_dataset = FlowerDataset(root_dir)
+    img_dir_col = "npy_path"
+    label_col = "assay_id_737823"
+    test_dataset = CellMorphoDataset(img_dict_df, img_dir_col, label_col)
 
     print(len(test_dataset))
     print(next(iter(test_dataset)))
-
-
