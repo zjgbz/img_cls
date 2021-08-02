@@ -41,6 +41,7 @@ if __name__ == "__main__":
     # step0: setting path
     train_dict_dir_filename = os.path.join(args.img_dict_dir, f"{cfg.label_col}_raw_img_unique_train.csv")
     val_dict_dir_filename = os.path.join(args.img_dict_dir, f"{cfg.label_col}_raw_img_unique_val.csv")
+    print(train_dict_dir_filename, val_dict_dir_filename)
     check_data_dir(train_dict_dir_filename)
     check_data_dir(val_dict_dir_filename)
     train_dict_df = pd.read_csv(train_dict_dir_filename, sep = ",", header = 0, index_col = None)
