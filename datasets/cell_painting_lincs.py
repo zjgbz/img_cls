@@ -9,7 +9,6 @@
 import os
 from PIL import Image
 from torch.utils.data import Dataset
-import pandas as pd
 
 class CellMorphoDataset(Dataset):
     cls_num = 2

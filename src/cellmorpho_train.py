@@ -10,13 +10,15 @@ import os
 import sys
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.join(BASE_DIR, '..'))
+
+import pandas as pd
 import argparse
 import torch.optim as optim
 from torch.utils.data import DataLoader
 from tools.model_trainer import ModelTrainer
 from tools.common_tools import *
 from tools.my_loss import LabelSmoothLoss
-from config.flower_config import cfg
+from config.cellmorpho_config import cfg
 from datetime import datetime
 from datasets.cell_painting_lincs import CellMorphoDataset
 
