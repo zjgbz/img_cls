@@ -1,25 +1,25 @@
 # -*- coding: utf-8 -*-
 """
-# @file name  : flower_102.py
-# @author     : https://github.com/TingsongYu
-# @date       : 2021年4月22日
-# @brief      : flower 102数据集读取
+# @file name  : cell_painting_lincs.py
+# @author     : https://github.com/zjgbz
+# @date       : 2021年8月2日
+# @brief      : LINCS Cell Painting数据集读取
 """
 
 import os
 from PIL import Image
 from torch.utils.data import Dataset
-
+import pandas as pd
 
 class FlowerDataset(Dataset):
     cls_num = 102
     names = tuple([i for i in range(cls_num)])
 
-    def __init__(self, root_dir, transform=None):
+    def __init__(self, img_dict_dir_filename, transform=None):
         """
         获取数据集的路径、预处理的方法
         """
-        self.root_dir = root_dir
+        self.img_dict_dir_filename = img_dict_dir_filename
         self.transform = transform
         self.img_info = []   # [(path, label), ... , ]
         self.label_array = None
@@ -58,7 +58,7 @@ class FlowerDataset(Dataset):
         names_imgs = os.listdir(self.root_dir)
         names_imgs = [n for n in names_imgs if n.endswith(".jpg")]
 
-        # 读取mat形式label
+        # read labels from pandas dataframe -- "assay_id_737823"
         label_file = "imagelabels.mat"  # hard code
         path_label_file = os.path.join(self.root_dir, "..", label_file)
         label_array = loadmat(path_label_file)["labels"].squeeze()
