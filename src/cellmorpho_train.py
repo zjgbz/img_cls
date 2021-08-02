@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-# @file name  : flower_train.py
-# @author     : TingsongYu https://github.com/TingsongYu
-# @date       : 2021-04-22
+# @file name  : cellmorpho_train.py
+# @author     : TingsongYu https://github.com/zjgbz
+# @date       : 2021-08-02
 # @brief      : 模型训练主代码
 """
 
@@ -27,7 +27,7 @@ parser = argparse.ArgumentParser(description='Training')
 parser.add_argument('--lr', default=None, help='learning rate')
 parser.add_argument('--bs', default=None, help='training batch size')
 parser.add_argument('--max_epoch', default=None)
-parser.add_argument('--data_root_dir', default=r"G:\deep_learning_data\flowers102",
+parser.add_argument('--img_dict_dir', default=r"/gxr/minzhi/multiomics_data/E_Metadata/raw",
                     help="path to your dataset")
 args = parser.parse_args()
 
@@ -37,10 +37,12 @@ cfg.max_epoch = args.max_epoch if args.max_epoch else cfg.max_epoch
 
 if __name__ == "__main__":
     # step0: setting path
-    train_dir = os.path.join(args.data_root_dir, "train")
-    valid_dir = os.path.join(args.data_root_dir, "valid")
-    check_data_dir(train_dir)
-    check_data_dir(valid_dir)
+    train_dict_dir_filename = os.path.join(args.img_dict_dir, f"{cfg.label_col}_raw_img_unique_train.csv")
+    val_dict_dir_filename = os.path.join(args.img_dict_dir, f"{cfg.label_col}_raw_img_unique_val.csv")
+    check_data_dir(train_dict_dir_filename)
+    check_data_dir(val_dict_dir_filename)
+    train_dict_df = pd.read_csv(train_dict_dir_filename, sep = ",", header = 0, index_col = None)
+    val_dict_df = pd.read_csv(val_dict_dir_filename, sep = ",", header = 0, index_col = None)
 
     # 创建logger
     res_dir = os.path.join(BASE_DIR, "..", "..", "results")
@@ -48,8 +50,8 @@ if __name__ == "__main__":
 
     # step1： 数据集
     # 构建MyDataset实例， 构建DataLoder
-    train_data = FlowerDataset(root_dir=train_dir, transform=cfg.transforms_train)
-    valid_data = FlowerDataset(root_dir=valid_dir, transform=cfg.transforms_valid)
+    train_data = CellMorphoDataset(img_dict_df=train_dict_df, img_dir_col = cfg.img_dir_col, label_col = cfg.label_col, transform=cfg.transforms_train)
+    valid_data = CellMorphoDataset(img_dict_df=val_dict_df, img_dir_col = cfg.img_dir_col, label_col = cfg.label_col, transform=cfg.transforms_valid)
     train_loader = DataLoader(dataset=train_data, batch_size=cfg.train_bs, shuffle=True, num_workers=cfg.workers)
     valid_loader = DataLoader(dataset=valid_data, batch_size=cfg.valid_bs, num_workers=cfg.workers)
 

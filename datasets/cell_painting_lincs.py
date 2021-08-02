@@ -2,7 +2,7 @@
 """
 # @file name  : cell_painting_lincs.py
 # @author     : https://github.com/zjgbz
-# @date       : 2021年8月2日
+# @date       : 2021-08-02
 # @brief      : LINCS Cell Painting数据集读取
 """
 

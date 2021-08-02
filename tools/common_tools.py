@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 # @file name  : common_tools.py
-# @author     : https://github.com/TingsongYu
-# @date       : 2021-02-27 10:08:00
+# @author     : https://github.com/zjgbz
+# @date       : 2021-08-02 10:08:00
 # @brief      : 通用函数库
 """
 import os

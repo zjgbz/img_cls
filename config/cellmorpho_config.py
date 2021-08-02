@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-# @file name  : flower_config.py
-# @author     : TingsongYu https://github.com/TingsongYu
-# @date       : 2020-04-23
-# @brief      : 花朵分类参数配置
+# @file name  : cellmorpho_config.py
+# @author     : TingsongYu https://github.com/zjgbz
+# @date       : 2020-08-02
+# @brief      : configuration of cell painting images classification
 """
 import os
 import sys
@@ -27,6 +27,8 @@ data_dir = os.path.join(BASE_DIR, "..", "..", "data")
 cfg.path_resnet18 = os.path.join(data_dir, "pretrained_model", "resnet18-5c106cde.pth")
 cfg.path_vgg16bn = os.path.join(data_dir, "pretrained_model", "vgg16_bn-6c64b313.pth")
 cfg.path_se_res50 = os.path.join(data_dir, "pretrained_model", "seresnet50-60a8950a85b2b.pkl")
+cfg.img_dir_col = "npy_path"
+cfg.label_col = "assay_id_737823"
 
 cfg.train_bs = 64
 cfg.valid_bs = 8
