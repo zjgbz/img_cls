@@ -19,7 +19,13 @@ class LabelSmoothLoss(nn.Module):
     def forward(self, input, target):
         log_prob = F.log_softmax(input, dim=-1)  # log_p 向量
         weight = input.new_ones(input.size()) * self.smoothing / (input.size(-1) - 1.)
-        weight.scatter_(-1, target.unsqueeze(-1), (1. - self.smoothing))  # Q向量
+
+        # index_tensor = target.unsqueeze(-1)
+        # index_array = index_tensor.numpy()
+        # index = torch.LongTensor(index_array)
+        index = target.unsqueeze(-1)
+        
+        weight.scatter_(-1, index, (1. - self.smoothing))  # Q向量
         loss = (-weight * log_prob).sum(dim=-1).mean()  # log_p * Q 再相加
         return loss
 
@@ -33,4 +39,3 @@ if __name__ == '__main__':
     loss = criterion(output, label)
 
     print("CrossEntropy:{}".format(loss))
-

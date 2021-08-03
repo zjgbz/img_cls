@@ -18,7 +18,8 @@ from PIL import Image
 import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
 from datetime import datetime
-from torchvision.models import resnet18
+# from torchvision.models import resnet18
+from models.resnet_tv import resnet18
 from models.vgg_tv import vgg16_bn
 from models.se_resnet import se_resnet50
 
@@ -228,6 +229,3 @@ if __name__ == "__main__":
 
     from config.flower_config import cfg
     logger.info(cfg)
-
-
-

@@ -9,7 +9,7 @@ import torch
 import numpy as np
 from collections import Counter
 from tools.mixup import mixup_criterion, mixup_data
-
+from sklearn.metrics import roc_auc_score
 
 class ModelTrainer(object):
 
@@ -63,12 +63,20 @@ class ModelTrainer(object):
                     path_error.append((cate_i, pre_i, path_imgs[j]))    # 记录错误样本的信息
             acc_avg = conf_mat.trace() / conf_mat.sum()
 
+            # AUROC
+            labels_array = labels.cpu().detach().numpy()
+            predicted_array = predicted.cpu().detach().numpy()
+            try:
+                auroc = roc_auc_score(labels_array, predicted_array)
+            except ValueError:
+                auroc = 0.
+
             # 每10个iteration 打印一次训练信息
             if i % cfg.log_interval == cfg.log_interval - 1:
-                logger.info("Training: Epoch[{:0>3}/{:0>3}] Iteration[{:0>3}/{:0>3}] Loss: {:.4f} Acc:{:.2%}".
-                            format(epoch_idx + 1, cfg.max_epoch, i + 1, len(data_loader), loss_mean, acc_avg))
+                logger.info("Training: Epoch[{:0>3}/{:0>3}] Iteration[{:0>3}/{:0>3}] Loss: {:.4f} Acc:{:.2%} AUROC:{:.4f}".
+                            format(epoch_idx + 1, cfg.max_epoch, i + 1, len(data_loader), loss_mean, acc_avg, auroc))
         logger.info("epoch:{} sampler: {}".format(epoch_idx, Counter(label_list)))
-        return loss_mean, acc_avg, conf_mat, path_error
+        return loss_mean, acc_avg, auroc, conf_mat, path_error
 
     @staticmethod
     def valid(data_loader, model, loss_f, device):
@@ -101,5 +109,12 @@ class ModelTrainer(object):
 
         acc_avg = conf_mat.trace() / conf_mat.sum()
 
-        return np.mean(loss_sigma), acc_avg, conf_mat, path_error
+        # AUROC
+        labels_array = labels.cpu().detach().numpy()
+        predicted_array = predicted.cpu().detach().numpy()
+        try:
+            auroc = roc_auc_score(labels_array, predicted_array)
+        except ValueError:
+            auroc = 0.
 
+        return np.mean(loss_sigma), acc_avg, auroc, conf_mat, path_error

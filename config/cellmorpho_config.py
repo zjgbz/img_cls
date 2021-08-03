@@ -27,22 +27,24 @@ cfg.label_smooth = True  # 是否采用标签平滑
 cfg.label_smooth_eps = 0.01  # 标签平滑超参数 eps
 
 data_dir = os.path.join(BASE_DIR, "..", "..", "data")
+print(data_dir)
 cfg.path_resnet18 = os.path.join(data_dir, "pretrained_model", "resnet18-5c106cde.pth")
 cfg.path_vgg16bn = os.path.join(data_dir, "pretrained_model", "vgg16_bn-6c64b313.pth")
 cfg.path_se_res50 = os.path.join(data_dir, "pretrained_model", "seresnet50-60a8950a85b2b.pkl")
 cfg.img_dir_col = "npy_path"
-cfg.label_col = "assay_id_737823"
+# cfg.label_col = "assay_id_737823"
+cfg.label_col = "assay_id_954272"
 
-cfg.train_bs = 64
-cfg.valid_bs = 8
+cfg.train_bs = 100
+cfg.valid_bs = 50
 cfg.workers = 2
 
 cfg.lr_init = 0.01
 cfg.momentum = 0.9
 cfg.weight_decay = 1e-4
 cfg.factor = 0.1
-cfg.milestones = [30, 45]
-cfg.max_epoch = 50
+cfg.milestones = [120, 180]
+cfg.max_epoch = 200
  
 cfg.log_interval = 10
 

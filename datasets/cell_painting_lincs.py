@@ -7,11 +7,14 @@
 """
 
 import os
+import numpy as np
+import pandas as pd
 from PIL import Image
 from torch.utils.data import Dataset
 
 class CellMorphoDataset(Dataset):
     cls_num = 2
+    names = tuple([i for i in range(cls_num)])
 
     def __init__(self, img_dict_df, img_dir_col, label_col, transform=None):
         """
@@ -21,9 +24,13 @@ class CellMorphoDataset(Dataset):
         self.transform = transform
         self.img_info = []   # [(path, label), ... , ]
         self.label_array = None
-        self._get_img_info()
         self.img_dir_col = img_dir_col
         self.label_col = label_col
+
+        # change the type of label to int
+        self.img_dict_df = img_dict_df.astype({label_col: int}, copy = True)
+
+        self._get_img_info()
 
     def __getitem__(self, index):
         """
@@ -57,10 +64,10 @@ class CellMorphoDataset(Dataset):
         path, label
         :return:
         """
-        path_imgs = img_dict_df.loc[:, img_dir_col].values.tolist()
+        path_imgs = self.img_dict_df.loc[:, self.img_dir_col].values.tolist()
 
         # read labels from pandas dataframe -- "assay_id_737823"
-        label_array = img_dict_df.loc[:, label_col].values.tolist()
+        label_array = self.img_dict_df.loc[:, self.label_col].values.tolist()
         self.label_array = label_array
 
         # match the path_imgs and label_array
