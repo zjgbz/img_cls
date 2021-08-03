@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 # @file name  : model_trainer.py
-# @author     : TingsongYu https://github.com/TingsongYu
-# @date       : 2020-02-29
+# @author     : https://github.com/zjgbz
+# @date       : 2020-08-03
 # @brief      : 模型训练类
 """
 import torch
@@ -24,14 +24,13 @@ class ModelTrainer(object):
         acc_avg = 0
         path_error = []
         label_list = []
+        pred_list = []
         for i, data in enumerate(data_loader):
 
             # _, labels = data
             inputs, labels, path_imgs = data
             label_list.extend(labels.tolist())
 
-            inputs, labels, path_imgs = data
-            # inputs, labels = data
             inputs, labels = inputs.to(device), labels.to(device)
 
             # mixup
@@ -55,6 +54,8 @@ class ModelTrainer(object):
             loss_mean = np.mean(loss_sigma)
             #
             _, predicted = torch.max(outputs.data, 1)
+            pred_list.extend(predicted.tolist())
+
             for j in range(len(labels)):
                 cate_i = labels[j].cpu().numpy()
                 pre_i = predicted[j].cpu().numpy()
@@ -64,12 +65,9 @@ class ModelTrainer(object):
             acc_avg = conf_mat.trace() / conf_mat.sum()
 
             # AUROC
-            labels_array = labels.cpu().detach().numpy()
-            predicted_array = predicted.cpu().detach().numpy()
-            try:
-                auroc = roc_auc_score(labels_array, predicted_array)
-            except ValueError:
-                auroc = 0.
+            labels_array = np.asarray(label_list)
+            pred_array = np.asarray(pred_list)
+            auroc = roc_auc_score(labels_array, pred_array)
 
             # 每10个iteration 打印一次训练信息
             if i % cfg.log_interval == cfg.log_interval - 1:
@@ -87,9 +85,10 @@ class ModelTrainer(object):
         loss_sigma = []
         path_error = []
 
+        label_list = []
+        pred_list = []
         for i, data in enumerate(data_loader):
             inputs, labels, path_imgs = data
-            # inputs, labels = data
             inputs, labels = inputs.to(device), labels.to(device)
 
             outputs = model(inputs)
@@ -97,6 +96,7 @@ class ModelTrainer(object):
 
             # 统计混淆矩阵
             _, predicted = torch.max(outputs.data, 1)
+            
             for j in range(len(labels)):
                 cate_i = labels[j].cpu().numpy()
                 pre_i = predicted[j].cpu().numpy()
@@ -107,14 +107,16 @@ class ModelTrainer(object):
             # 统计loss
             loss_sigma.append(loss.item())
 
+            label_list.extend(labels.tolist())
+            pred_list.extend(predicted.tolist())
+            # print(f"batch {i} completed.")
+
         acc_avg = conf_mat.trace() / conf_mat.sum()
 
         # AUROC
-        labels_array = labels.cpu().detach().numpy()
-        predicted_array = predicted.cpu().detach().numpy()
-        try:
-            auroc = roc_auc_score(labels_array, predicted_array)
-        except ValueError:
-            auroc = 0.
+        # print(len(label_list), len(pred_list))
+        labels_array = np.asarray(label_list)
+        pred_array = np.asarray(pred_list)
+        auroc = roc_auc_score(labels_array, pred_array)
 
         return np.mean(loss_sigma), acc_avg, auroc, conf_mat, path_error

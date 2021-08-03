@@ -68,7 +68,7 @@ if __name__ == "__main__":
         loss_f = nn.CrossEntropyLoss()
     optimizer = optim.SGD(model.parameters(), lr=cfg.lr_init, momentum=cfg.momentum, weight_decay=cfg.weight_decay)
     scheduler = optim.lr_scheduler.MultiStepLR(optimizer, gamma=cfg.factor, milestones=cfg.milestones)
-
+    # scheduler = optim.lr_scheduler.CosineAnnealingWarmRestarts(optimizer, T_0 = cfg.T_0, T_mult = cfg.T_mult, eta_min = cfg.min_lr, last_epoch = -1)
     # step4: 迭代训练
     # 记录训练所采用的模型、损失函数、优化器、配置参数cfg
     logger.info("cfg:\n{}\n loss_f:\n{}\n scheduler:\n{}\n optimizer:\n{}\n model:\n{}".format(
