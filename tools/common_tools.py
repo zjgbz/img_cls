@@ -19,7 +19,7 @@ import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
 from datetime import datetime
 # from torchvision.models import resnet18
-from models.resnet_tv import resnet18
+from models.resnet_tv import resnet18, resnet101
 from models.vgg_tv import vgg16_bn
 from models.se_resnet import se_resnet50
 

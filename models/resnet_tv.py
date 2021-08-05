@@ -99,7 +99,7 @@ class Bottleneck(nn.Module):
 
 class ResNet(nn.Module):
 
-    def __init__(self, block="bottleneck", layers: list = (3, 4, 23, 3), num_classes=1000, zero_init_residual=False, regression=False):
+    def __init__(self, block="bottleneck", layers: list = (3, 4, 23, 3), num_classes=1000, input_shape=None, zero_init_residual=False, regression=False):
         super(ResNet, self).__init__()
         self.inplanes = 64
 
@@ -108,7 +108,7 @@ class ResNet(nn.Module):
         elif block == "basic":
             block = BasicBlock
         self.n_classes = num_classes
-        if input_shape is not None:
+        if input_shape is None:
             channels_in = 5
         self.is_regression = regression
 

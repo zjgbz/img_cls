@@ -13,7 +13,7 @@ from PIL import Image
 from torch.utils.data import Dataset
 
 class CellMorphoDataset(Dataset):
-    cls_num = 2
+    cls_num = 14
     names = tuple([i for i in range(cls_num)])
 
     def __init__(self, img_dict_df, img_dir_col, label_col, transform=None):

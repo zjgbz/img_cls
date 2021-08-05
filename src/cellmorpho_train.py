@@ -39,8 +39,8 @@ cfg.max_epoch = args.max_epoch if args.max_epoch else cfg.max_epoch
 
 if __name__ == "__main__":
     # step0: setting path
-    train_dict_dir_filename = os.path.join(args.img_dict_dir, f"{cfg.label_col}_raw_img_unique_train.csv")
-    val_dict_dir_filename = os.path.join(args.img_dict_dir, f"{cfg.label_col}_raw_img_unique_val.csv")
+    train_dict_dir_filename = os.path.join(args.img_dict_dir, f"{cfg.label_col}_raw_img_dup_train.csv")
+    val_dict_dir_filename = os.path.join(args.img_dict_dir, f"{cfg.label_col}_raw_img_dup_val.csv")
     check_data_dir(train_dict_dir_filename)
     check_data_dir(val_dict_dir_filename)
     train_dict_df = pd.read_csv(train_dict_dir_filename, sep = ",", header = 0, index_col = None)
@@ -77,6 +77,9 @@ if __name__ == "__main__":
     loss_rec = {"train": [], "valid": []}
     auroc_rec = {"train": [], "valid": []}
     best_auroc, best_epoch = 0, 0
+    # loss_rec = {"train": [], "valid": []}
+    # acc_rec = {"train": [], "valid": []}
+    # best_acc, best_epoch = 0, 0
     for epoch in range(cfg.max_epoch):
 
         loss_train, acc_train, auroc_train, mat_train, path_error_train = ModelTrainer.train(
@@ -88,6 +91,16 @@ if __name__ == "__main__":
         logger.info("Epoch[{:0>3}/{:0>3}] Train AUROC: {:.4f} Valid AUROC:{:.4f} Train loss:{:.4f} Valid loss:{:.4f} LR:{}". \
                     format(epoch + 1, cfg.max_epoch, auroc_train, auroc_valid, loss_train, loss_valid,
                            optimizer.param_groups[0]["lr"]))
+
+        # loss_train, acc_train, mat_train, path_error_train = ModelTrainer.train(
+        #     train_loader, model, loss_f, optimizer, scheduler, epoch, device, cfg, logger)
+
+        # loss_valid, acc_valid, mat_valid, path_error_valid = ModelTrainer.valid(
+        #     valid_loader, model, loss_f, device)
+
+        # logger.info("Epoch[{:0>3}/{:0>3}] Train Acc: {:.2%} Valid Acc:{:.2%} Train loss:{:.4f} Valid loss:{:.4f} LR:{}". \
+        #             format(epoch + 1, cfg.max_epoch, acc_train, acc_valid, loss_train, loss_valid,
+        #                    optimizer.param_groups[0]["lr"]))
         scheduler.step()
 
         # 记录训练信息
@@ -125,3 +138,37 @@ if __name__ == "__main__":
 
     logger.info("{} done, best AUROC: {} in :{}".format(
         datetime.strftime(datetime.now(), '%m-%d_%H-%M'), best_auroc, best_epoch))
+
+    #     # 记录训练信息
+    #     loss_rec["train"].append(loss_train), loss_rec["valid"].append(loss_valid)
+    #     acc_rec["train"].append(acc_train), acc_rec["valid"].append(acc_valid)
+    #     # 保存混淆矩阵图
+    #     show_confMat(mat_train, train_data.names, "train", log_dir, epoch=epoch, verbose=epoch == cfg.max_epoch - 1)
+    #     show_confMat(mat_valid, valid_data.names, "valid", log_dir, epoch=epoch, verbose=epoch == cfg.max_epoch - 1)
+    #     # 保存loss曲线， acc曲线
+    #     plt_x = np.arange(1, epoch + 2)
+    #     plot_line(plt_x, loss_rec["train"], plt_x, loss_rec["valid"], mode="loss", out_dir=log_dir)
+    #     plot_line(plt_x, acc_rec["train"], plt_x, acc_rec["valid"], mode="acc", out_dir=log_dir)
+
+    #     # 模型保存
+    #     if best_acc < acc_valid or epoch == cfg.max_epoch - 1:
+    #         best_epoch = epoch if best_acc < acc_valid else best_epoch
+    #         best_acc = acc_valid if best_acc < acc_valid else best_acc
+    #         checkpoint = {"model_state_dict": model.state_dict(),
+    #                       "optimizer_state_dict": optimizer.state_dict(),
+    #                       "epoch": epoch,
+    #                       "best_acc": best_acc}
+    #         pkl_name = "checkpoint_{}.pkl".format(epoch) if epoch == cfg.max_epoch - 1 else "checkpoint_best.pkl"
+    #         path_checkpoint = os.path.join(log_dir, pkl_name)
+    #         torch.save(checkpoint, path_checkpoint)
+
+    #         # 保存错误图片的路径
+    #         err_ims_name = "error_imgs_{}.pkl".format(epoch) if epoch == cfg.max_epoch-1 else "error_imgs_best.pkl"
+    #         path_err_imgs = os.path.join(log_dir, err_ims_name)
+    #         error_info = {}
+    #         error_info["train"] = path_error_train
+    #         error_info["valid"] = path_error_valid
+    #         pickle.dump(error_info, open(path_err_imgs, 'wb'))
+
+    # logger.info("{} done, best acc: {} in :{}".format(
+    #     datetime.strftime(datetime.now(), '%m-%d_%H-%M'), best_acc, best_epoch))

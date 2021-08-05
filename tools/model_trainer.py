@@ -75,6 +75,7 @@ class ModelTrainer(object):
                             format(epoch_idx + 1, cfg.max_epoch, i + 1, len(data_loader), loss_mean, acc_avg, auroc))
         logger.info("epoch:{} sampler: {}".format(epoch_idx, Counter(label_list)))
         return loss_mean, acc_avg, auroc, conf_mat, path_error
+        # return loss_mean, acc_avg, conf_mat, path_error
 
     @staticmethod
     def valid(data_loader, model, loss_f, device):
@@ -88,11 +89,12 @@ class ModelTrainer(object):
         label_list = []
         pred_list = []
         for i, data in enumerate(data_loader):
-            inputs, labels, path_imgs = data
-            inputs, labels = inputs.to(device), labels.to(device)
+            with torch.no_grad():
+                inputs, labels, path_imgs = data
+                inputs, labels = inputs.to(device), labels.to(device)
 
-            outputs = model(inputs)
-            loss = loss_f(outputs.cpu(), labels.cpu())
+                outputs = model(inputs)
+                loss = loss_f(outputs.cpu(), labels.cpu())
 
             # 统计混淆矩阵
             _, predicted = torch.max(outputs.data, 1)
@@ -120,3 +122,4 @@ class ModelTrainer(object):
         auroc = roc_auc_score(labels_array, pred_array)
 
         return np.mean(loss_sigma), acc_avg, auroc, conf_mat, path_error
+        # return np.mean(loss_sigma), acc_avg, conf_mat, path_error

@@ -21,21 +21,22 @@ cfg.model_name = "resnet18"
 # cfg.model_name = "vgg16_bn"
 # cfg.model_name = "se_resnet50"
 
-cfg.mixup = True  # 是否采用mixup
+cfg.mixup = False  # 是否采用mixup
 cfg.mixup_alpha = 1.  # beta分布的参数. beta分布是一组定义在(0,1) 区间的连续概率分布。
-cfg.label_smooth = True  # 是否采用标签平滑
+cfg.label_smooth = False  # 是否采用标签平滑
 cfg.label_smooth_eps = 0.01  # 标签平滑超参数 eps
 
-data_dir = os.path.join(BASE_DIR, "..", "..", "data")
+data_dir = os.path.join(BASE_DIR, "..", "data")
 # print(data_dir)
 cfg.path_resnet18 = os.path.join(data_dir, "pretrained_model", "resnet18-5c106cde.pth")
 cfg.path_vgg16bn = os.path.join(data_dir, "pretrained_model", "vgg16_bn-6c64b313.pth")
 cfg.path_se_res50 = os.path.join(data_dir, "pretrained_model", "seresnet50-60a8950a85b2b.pkl")
 cfg.img_dir_col = "npy_path"
 # cfg.label_col = "assay_id_737823"
-cfg.label_col = "assay_id_954272"
+# cfg.label_col = "assay_id_954272"
+cfg.label_col = "level_1"
 
-cfg.train_bs = 100
+cfg.train_bs = 96
 cfg.valid_bs = 50
 cfg.workers = 2
 
