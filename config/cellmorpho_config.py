@@ -45,7 +45,7 @@ cfg.momentum = 0.9
 cfg.weight_decay = 1e-4
 cfg.factor = 0.1
 cfg.milestones = [90, 150]
-cfg.max_epoch = 200
+cfg.max_epoch = 40
 
 cfg.T_0 = 10
 cfg.T_mult = 1

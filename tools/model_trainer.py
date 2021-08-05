@@ -73,10 +73,14 @@ class ModelTrainer(object):
 
             # 每10个iteration 打印一次训练信息
             if i % cfg.log_interval == cfg.log_interval - 1:
+                # logger.info(
+                #     (f"Training: Epoch[{epoch_idx + 1:0>3}/{cfg.max_epoch:0>3}] Iteration[{i + 1:0>3}/{len(data_loader):0>3}] "
+                #      f"Loss: {loss_mean:.4f} Acc:{acc_avg:.2%} Precision(macro):{prec_macro:.4f} Recall(macro):{recall_macro:.4f} "
+                #      f"F1(macro):{F1_macro:.4f} Precision(micro):{prec_micro:.4f} Recall(micro):{recall_micro:.4f} F1(micro):{F1_micro:.4f}")
+                # )
                 logger.info(
                     (f"Training: Epoch[{epoch_idx + 1:0>3}/{cfg.max_epoch:0>3}] Iteration[{i + 1:0>3}/{len(data_loader):0>3}] "
-                     f"Loss: {loss_mean:.4f} Acc:{acc_avg:.2%} Precision(macro):{prec_macro:.4f} Recall(macro):{recall_macro:.4f} "
-                     f"F1(macro):{F1_macro:.4f} Precision(micro):{prec_micro:.4f} Recall(micro):{recall_micro:.4f} F1(micro):{F1_micro:.4f}")
+                     f"Loss: {loss_mean:.4f} Acc:{acc_avg:.2%} F1(macro):{F1_macro:.4f}")
                 )
         logger.info("epoch:{} sampler: {}".format(epoch_idx, Counter(label_list)))
         return loss_mean, acc_avg, prec_macro, recall_macro, F1_macro, prec_micro, recall_micro, F1_micro, conf_mat, path_error
