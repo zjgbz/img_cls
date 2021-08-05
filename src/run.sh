@@ -1,0 +1,1 @@
+CUDA_VISIBLE_DEVICE=$1 python cellmorpho_train.py --label_col $2

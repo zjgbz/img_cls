@@ -31,11 +31,13 @@ parser.add_argument('--bs', default=None, help='training batch size')
 parser.add_argument('--max_epoch', default=None)
 parser.add_argument('--img_dict_dir', default=r"/gxr/minzhi/multiomics_data/E_Metadata/raw",
                     help="path to your dataset")
+parser.add_argument('--label_col', default="level_2", help="name of the clinical labels")
 args = parser.parse_args()
 
 cfg.lr_init = args.lr if args.lr else cfg.lr_init
 cfg.train_bs = args.bs if args.bs else cfg.train_bs
 cfg.max_epoch = args.max_epoch if args.max_epoch else cfg.max_epoch
+cfg.label_col = args.label_col if args.label_col else cfg.label_col
 
 if __name__ == "__main__":
     # step0: setting path
