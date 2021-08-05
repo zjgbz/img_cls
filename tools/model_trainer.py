@@ -67,14 +67,19 @@ class ModelTrainer(object):
             # AUROC
             labels_array = np.asarray(label_list)
             pred_array = np.asarray(pred_list)
-            auroc = roc_auc_score(labels_array, pred_array)
+            # auroc = roc_auc_score(labels_array, pred_array)
+            prec_macro, recall_macro, F1_macro, _ = precision_recall_fscore_support(labels_array, pred_array, average = 'macro')
+            prec_micro, recall_micro, F1_micro, _ = precision_recall_fscore_support(labels_array, pred_array, average = 'micro')
 
             # 每10个iteration 打印一次训练信息
             if i % cfg.log_interval == cfg.log_interval - 1:
-                logger.info("Training: Epoch[{:0>3}/{:0>3}] Iteration[{:0>3}/{:0>3}] Loss: {:.4f} Acc:{:.2%} AUROC:{:.4f}".
-                            format(epoch_idx + 1, cfg.max_epoch, i + 1, len(data_loader), loss_mean, acc_avg, auroc))
+                logger.info(
+                    (f"Training: Epoch[{epoch_idx + 1:0>3}/{cfg.max_epoch:0>3}] Iteration[{i + 1:0>3}/{len(data_loader):0>3}] "
+                     f"Loss: {loss_mean:.4f} Acc:{acc_avg:.2%} Precision(macro):{prec_macro:.4f} Recall(macro):{recall_macro:.4f} "
+                     f"F1(macro):{F1_macro:.4f} Precision(micro):{prec_micro:.4f} Recall(micro):{recall_micro:.4f} F1(micro):{F1_micro:.4f}")
+                )
         logger.info("epoch:{} sampler: {}".format(epoch_idx, Counter(label_list)))
-        return loss_mean, acc_avg, auroc, conf_mat, path_error
+        return loss_mean, acc_avg, prec_macro, recall_macro, F1_macro, prec_micro, recall_micro, F1_micro, conf_mat, path_error
         # return loss_mean, acc_avg, conf_mat, path_error
 
     @staticmethod
@@ -119,7 +124,9 @@ class ModelTrainer(object):
         # print(len(label_list), len(pred_list))
         labels_array = np.asarray(label_list)
         pred_array = np.asarray(pred_list)
-        auroc = roc_auc_score(labels_array, pred_array)
+        # auroc = roc_auc_score(labels_array, pred_array)
 
-        return np.mean(loss_sigma), acc_avg, auroc, conf_mat, path_error
-        # return np.mean(loss_sigma), acc_avg, conf_mat, path_error
+        prec_macro, recall_macro, F1_macro, _ = precision_recall_fscore_support(labels_array, pred_array, average = 'macro')
+        prec_micro, recall_micro, F1_micro, _ = precision_recall_fscore_support(labels_array, pred_array, average = 'micro')
+
+        return np.mean(loss_sigma), acc_avg, prec_macro, recall_macro, F1_macro, prec_micro, recall_micro, F1_micro, conf_mat, path_error
