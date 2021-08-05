@@ -34,7 +34,12 @@ cfg.path_se_res50 = os.path.join(data_dir, "pretrained_model", "seresnet50-60a89
 cfg.img_dir_col = "npy_path"
 # cfg.label_col = "assay_id_737823"
 # cfg.label_col = "assay_id_954272"
-cfg.label_col = "level_1"
+# cfg.label_col = "level_1"
+cfg.label_col = "level_2"
+# cfg.label_col = "level_3"
+# cfg.label_col = "level_4"
+# cfg.label_col = "level_5"
+cfg.clinical_type = "E1"
 
 cfg.train_bs = 96
 cfg.valid_bs = 50
@@ -44,7 +49,7 @@ cfg.lr_init = 0.001
 cfg.momentum = 0.9
 cfg.weight_decay = 1e-4
 cfg.factor = 0.1
-cfg.milestones = [90, 150]
+cfg.milestones = [20, 30]
 cfg.max_epoch = 40
 
 cfg.T_0 = 10
