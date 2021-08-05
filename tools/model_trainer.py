@@ -9,7 +9,7 @@ import torch
 import numpy as np
 from collections import Counter
 from tools.mixup import mixup_criterion, mixup_data
-from sklearn.metrics import roc_auc_score
+from sklearn.metrics import roc_auc_score, precision_recall_fscore_support
 
 class ModelTrainer(object):
 
