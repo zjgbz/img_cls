@@ -77,7 +77,7 @@ if __name__ == "__main__":
     loss_rec = {"train": [], "valid": []}
     F1_macro_rec = {"train": [], "valid": []}
     F1_micro_rec = {"train": [], "valid": []}
-    best_F1_macro, best_F1_micro, best_epoch = 0, 0
+    best_F1_macro, best_F1_micro, best_epoch = 0, 0, 0
 
     for epoch in range(cfg.max_epoch):
 

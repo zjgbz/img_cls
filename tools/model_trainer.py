@@ -68,8 +68,8 @@ class ModelTrainer(object):
             labels_array = np.asarray(label_list)
             pred_array = np.asarray(pred_list)
             # auroc = roc_auc_score(labels_array, pred_array)
-            prec_macro, recall_macro, F1_macro, _ = precision_recall_fscore_support(labels_array, pred_array, average = 'macro')
-            prec_micro, recall_micro, F1_micro, _ = precision_recall_fscore_support(labels_array, pred_array, average = 'micro')
+            prec_macro, recall_macro, F1_macro, _ = precision_recall_fscore_support(labels_array, pred_array, average = 'macro', zero_division = 0)
+            prec_micro, recall_micro, F1_micro, _ = precision_recall_fscore_support(labels_array, pred_array, average = 'micro', zero_division = 0)
 
             # 每10个iteration 打印一次训练信息
             if i % cfg.log_interval == cfg.log_interval - 1:
@@ -126,7 +126,7 @@ class ModelTrainer(object):
         pred_array = np.asarray(pred_list)
         # auroc = roc_auc_score(labels_array, pred_array)
 
-        prec_macro, recall_macro, F1_macro, _ = precision_recall_fscore_support(labels_array, pred_array, average = 'macro')
-        prec_micro, recall_micro, F1_micro, _ = precision_recall_fscore_support(labels_array, pred_array, average = 'micro')
+        prec_macro, recall_macro, F1_macro, _ = precision_recall_fscore_support(labels_array, pred_array, average = 'macro', zero_division = 0)
+        prec_micro, recall_micro, F1_micro, _ = precision_recall_fscore_support(labels_array, pred_array, average = 'micro', zero_division = 0)
 
         return np.mean(loss_sigma), acc_avg, prec_macro, recall_macro, F1_macro, prec_micro, recall_micro, F1_micro, conf_mat, path_error
