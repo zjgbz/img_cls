@@ -23,8 +23,8 @@ cfg.model_name = "resnet18"
 
 cfg.mixup = False  # 是否采用mixup
 cfg.mixup_alpha = 1.  # beta分布的参数. beta分布是一组定义在(0,1) 区间的连续概率分布。
-cfg.label_smooth = False  # 是否采用标签平滑
-cfg.label_smooth_eps = 0.01  # 标签平滑超参数 eps
+cfg.label_smooth = True  # 是否采用标签平滑
+cfg.label_smooth_eps = 0.001  # 标签平滑超参数 eps
 
 data_dir = os.path.join(BASE_DIR, "..", "data")
 # print(data_dir)
