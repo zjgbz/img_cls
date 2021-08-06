@@ -41,8 +41,8 @@ cfg.label_col = args.label_col if args.label_col else cfg.label_col
 
 if __name__ == "__main__":
     # step0: setting path
-    train_dict_dir_filename = os.path.join(args.img_dict_dir, f"{cfg.clinical_type}-{cfg.label_col}_raw_img_dup_train.csv")
-    val_dict_dir_filename = os.path.join(args.img_dict_dir, f"{cfg.clinical_type}-{cfg.label_col}_raw_img_dup_val.csv")
+    train_dict_dir_filename = os.path.join(args.img_dict_dir, f"{cfg.clinical_type}-{cfg.label_col}_raw_img_dup_train_arti.csv")
+    val_dict_dir_filename = os.path.join(args.img_dict_dir, f"{cfg.clinical_type}-{cfg.label_col}_raw_img_dup_val_arti.csv")
     check_data_dir(train_dict_dir_filename)
     check_data_dir(val_dict_dir_filename)
     train_dict_df = pd.read_csv(train_dict_dir_filename, sep = ",", header = 0, index_col = None)
