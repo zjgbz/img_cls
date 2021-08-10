@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 # @file name  : flower_config.py
-# @author     : TingsongYu https://github.com/TingsongYu
+# @author     : zjgbz https://github.com/zjgbz
 # @date       : 2020-04-23
 # @brief      : cifar-10分类参数配置
 """

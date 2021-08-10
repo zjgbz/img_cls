@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 # @file name  : evaluate.py
-# @author     : https://github.com/TingsongYu
+# @author     : https://github.com/zjgbz
 # @date       : 2021-03-07
 # @brief      : 模型在test上进行指标计算
 """

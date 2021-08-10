@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 # @file name  : parse_error_imgs.py
-# @author     : https://github.com/TingsongYu
+# @author     : https://github.com/zjgbz
 # @date       : 2021-02-27
 # @brief      : 将错误分类的图片挑出来，进行观察
 """

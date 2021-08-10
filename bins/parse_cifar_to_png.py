@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 # @file name  : parse_cifar10_to_png.py
-# @author     : https://github.com/TingsongYu
+# @author     : https://github.com/zjgbz
 # @date       : 2020-02-29
 # @brief      : 将cifar10数据pickle形式解析成png格式
 """

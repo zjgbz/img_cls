@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 # @file name  : cellmorpho_config.py
-# @author     : TingsongYu https://github.com/zjgbz
+# @author     : zjgbz https://github.com/zjgbz
 # @date       : 2020-08-02
 # @brief      : configuration of cell painting images classification
 """

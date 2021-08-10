@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 # @file name  : main.py
-# @author     : TingsongYu https://github.com/TingsongYu
+# @author     : zjgbz https://github.com/zjgbz
 # @date       : 2021-02-27
 # @brief      : 模型训练主代码
 """

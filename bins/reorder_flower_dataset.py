@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 # @file name  : reorder_flower_dataset.py
-# @author     : https://github.com/TingsongYu
+# @author     : https://github.com/zjgbz
 # @date       : 2021-03-07
 # @brief      : 将flower数据集按类别排放，便于分析
 """

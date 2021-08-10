@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-# @file name  : flower_102.py
-# @author     : https://github.com/TingsongYu
+# @file name  : cifar_longtail.py
+# @author     : https://github.com/zjgbz
 # @date       : 2021年4月22日
-# @brief      : flower 102数据集读取
+# @brief      : cifar 10数据集读取
 """
 
 import os
