@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 # @file name  : cifar_train.py
-# @author     : TingsongYu https://github.com/TingsongYu
+# @author     : zjgbz https://github.com/zjgbz
 # @date       : 2021-04-22
 # @brief      : 模型训练主代码
 """
